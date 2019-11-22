@@ -52,6 +52,11 @@ func (c *Compiler) emitPointerUnpack(ptr llvm.Value, valueTypes []llvm.Type) []l
 	return llvmutil.EmitPointerUnpack(c.builder, c.mod, ptr, valueTypes)
 }
 
+// emitPointerUnpack extracts a list of values packed using emitPointerPack.
+func (b *builder) emitPointerUnpack(ptr llvm.Value, valueTypes []llvm.Type) []llvm.Value {
+	return llvmutil.EmitPointerUnpack(b.Builder, b.mod, ptr, valueTypes)
+}
+
 // splitBasicBlock splits a LLVM basic block into two parts. All instructions
 // after afterInst are moved into a new basic block (created right after the
 // current one) with the given name.
