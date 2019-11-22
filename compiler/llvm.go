@@ -128,7 +128,7 @@ func (c *Compiler) splitBasicBlock(afterInst llvm.Value, insertAfter llvm.BasicB
 // contents, and returns the global.
 // Note that it is left with the default linkage etc., you should set
 // linkage/constant/etc properties yourself.
-func (c *Compiler) makeGlobalArray(buf []byte, name string, elementType llvm.Type) llvm.Value {
+func (c *compilerContext) makeGlobalArray(buf []byte, name string, elementType llvm.Type) llvm.Value {
 	globalType := llvm.ArrayType(elementType, len(buf))
 	global := llvm.AddGlobal(c.mod, globalType, name)
 	value := llvm.Undef(globalType)
