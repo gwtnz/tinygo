@@ -265,7 +265,9 @@ commands:
             ln -s $PWD/llvm-build/bin/clang-9 /usr/local/bin/clang-9
       - run:
           name: "Test TinyGo"
-          command: make test
+          command: |
+            make gen-device-sifive # needed for testing
+            make test
       - run:
           name: "Build TinyGo release"
           command: |

@@ -53,6 +53,12 @@ func TestCompiler(t *testing.T) {
 		runPlatTests("cortex-m-qemu", matches, t)
 	})
 
+	if runtime.GOOS == "windows" {
+		t.Run("EmulatedHiFive1", func(t *testing.T) {
+			runPlatTests("hifive1-qemu", matches, t)
+		})
+	}
+
 	if runtime.GOOS == "linux" {
 		t.Run("ARMLinux", func(t *testing.T) {
 			runPlatTests("arm--linux-gnueabihf", matches, t)
@@ -78,6 +84,15 @@ func runPlatTests(target string, matches []string, t *testing.T) {
 			// run all tests on host
 		case target == "cortex-m-qemu":
 			// all tests are supported
+		case target == "hifive1-qemu":
+			if path == filepath.Join("testdata", "coroutines.go") || path == filepath.Join("testdata", "channel.go") || path == filepath.Join("testdata", "interface.go") {
+				// time.Sleep does not work yet in QEMU?
+				continue
+			}
+			if path == filepath.Join("testdata", "cgo")+string(filepath.Separator) {
+				// CGo doesn't work yet for some reason.
+				continue
+			}
 		default:
 			// cross-compilation of cgo is not yet supported
 			if path == filepath.Join("testdata", "cgo")+string(filepath.Separator) {
